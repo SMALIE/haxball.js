@@ -1,7 +1,6 @@
-{
-  "name": "haxball.js",
-  "version": "3.1.1",
-  "description": "A powerful library for interacting with the Haxball Headless API",
+{  "name": "@smalie/haxball-local",
+  "version": "1.0.0",
+  "description": "A custom fork of haxball.js with local file reading support",
   "main": "src/index.js",
   "types": "types/index.d.ts",
   "engines": {
@@ -15,9 +14,11 @@
     "haxball",
     "headless",
     "bot",
-    "room"
+    "room",
+    "local",
+    "fork"
   ],
-  "author": "mertushka",
+  "author": "SMALIE",
   "license": "MIT",
   "dependencies": {
     "@mertushka/node-datachannel": "^0.30.0",
@@ -32,15 +33,14 @@
   "devDependencies": {
     "@mapbox/node-pre-gyp": "^2.0.0",
     "mocha": "^11.1.0"
-  },
-  "repository": {
+  },  "repository": {
     "type": "git",
-    "url": "git+https://github.com/mertushka/haxball.js.git"
+    "url": "git+https://github.com/SMALIE/haxball.js.git"
   },
   "bugs": {
-    "url": "https://github.com/mertushka/haxball.js/issues"
+    "url": "https://github.com/SMALIE/haxball.js/issues"
   },
-  "homepage": "https://github.com/mertushka/haxball.js#readme",
+  "homepage": "https://github.com/SMALIE/haxball.js#readme",
   "trustedDependencies": [
     "node-datachannel"
   ]
