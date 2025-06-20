@@ -1,4 +1,5 @@
-{  "name": "@smalie/haxball.js",
+{
+  "name": "@smalie/haxball.js",
   "version": "1.0.2",
   "description": "A custom fork of haxball.js with local file reading support",
   "main": "src/index.js",
@@ -19,8 +20,7 @@
     "fork"
   ],
   "author": "SMALIE",
-  "license": "MIT",
-  "dependencies": {
+  "license": "MIT",  "dependencies": {
     "@mertushka/node-datachannel": "^0.30.0",
     "@peculiar/webcrypto": "^1.5.0",
     "@types/haxball-headless-browser": "^0.4.0",
@@ -33,7 +33,8 @@
   "devDependencies": {
     "@mapbox/node-pre-gyp": "^2.0.0",
     "mocha": "^11.1.0"
-  },  "repository": {
+  },
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/SMALIE/haxball.js.git"
   },
