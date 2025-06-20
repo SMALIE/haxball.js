@@ -57,38 +57,39 @@ function removeWindowReferences(source) {
 }
 
 function applyRegexReplacements(source) {
-  // HBInit replacement
-  const hbInitMatch = source.match(/HBInit=.+?;/);
+  // HBInit replacement - flexible with whitespace
+  const hbInitMatch = source.match(/HBInit\s*=\s*.+?;/);
   if (!hbInitMatch) throw new Error('Failed to find HBInit pattern');
+  const assignmentValue = hbInitMatch[0].match(/=\s*(.+?);/)[1];
   source = source.replace(
     hbInitMatch[0],
-    `promiseResolve(${hbInitMatch[0].substring(7, hbInitMatch[0].length - 1)});`
+    `promiseResolve(${assignmentValue});`
   );
 
-  // WebSocket replacement
-  const wsMatch = source.match(/new WebSocket\([^)]+\);/);
+  // WebSocket replacement - flexible with whitespace
+  const wsMatch = source.match(/new\s+WebSocket\s*\([^)]+\)\s*;?/);
   if (!wsMatch) throw new Error('Failed to find WebSocket pattern');
   source = source.replace(
     wsMatch[0],
     wsMatch[0].replace(
-      /new WebSocket\(([^)]+)\);/,
-      'new WebSocket($1, {headers:{origin: "https://html5.haxball.com"}, agent: proxyAgent});'
+      /new\s+WebSocket\s*\(([^)]+)\)/,
+      'new WebSocket($1, {headers:{origin: "https://html5.haxball.com"}, agent: proxyAgent})'
     )
   );
 
-  // Add WebSocket error debug
+  // Add WebSocket error debug - very flexible with whitespace
   const wsErrorPattern =
-    /([a-zA-Z]+)\.([a-zA-Z]+)\.onerror=function\(\){([a-zA-Z]+)\.([a-zA-Z]+)\(!0\)}/;
+    /([a-zA-Z]+)\.([a-zA-Z]+)\.onerror\s*=\s*function\s*\(\s*\)\s*{\s*([a-zA-Z]+)\.([a-zA-Z]+)\s*\(\s*(!0|true)\s*\)\s*}\s*;?/;
   const wsErrorMatch = source.match(wsErrorPattern);
   if (!wsErrorMatch) throw new Error('Failed to find WebSocket error handler');
 
-  const [fullMatch, objName, wsProperty, methodObj, methodName] = wsErrorMatch;
-  const debugCode = `${objName}.${wsProperty}.onerror=function(err){${methodObj}.${methodName}(!0);debug && console.error(err)};`;
+  const [fullMatch, objName, wsProperty, methodObj, methodName, trueValue] = wsErrorMatch;
+  const debugCode = `${objName}.${wsProperty}.onerror=function(err){${methodObj}.${methodName}(${trueValue});debug && console.error(err)};`;
   source = source.replace(fullMatch, debugCode);
 
-  // Recaptcha replacement
+  // Recaptcha replacement - flexible with whitespace
   const recaptchaMatch = source.match(
-    /case "recaptcha":([a-zA-Z]+)\(([^)]+)\)/
+    /case\s+"recaptcha"\s*:\s*([a-zA-Z]+)\s*\(\s*([^)]+)\s*\)/
   );
   if (!recaptchaMatch) throw new Error('Failed to find Recaptcha pattern');
   source = source.replace(
@@ -100,17 +101,17 @@ function applyRegexReplacements(source) {
 }
 
 function addProxySupport(source) {
-  // Find the initialization pattern with more flexible matching
+  // Find the initialization pattern with flexible whitespace matching
   const initPattern =
-    /if\s*\([A-Za-z]+\.[A-Za-z]+\)\s*throw\s+[A-Za-z]+\.[A-Za-z]+\s*\(\s*"Can't init twice"\s*\)\s*;\s*[A-Za-z]+\.[A-Za-z]+\s*=\s*!0\s*;/;
+    /if\s*\(\s*[A-Za-z]+\.[A-Za-z]+\s*\)\s*throw\s+[A-Za-z]+\.[A-Za-z]+\s*\(\s*"Can't init twice"\s*\)\s*;\s*[A-Za-z]+\.[A-Za-z]+\s*=\s*!0\s*;/;
   const initMatch = source.match(initPattern);
 
   if (!initMatch) {
     throw new Error('Could not find initialization pattern for proxy support');
   }
 
-  // Get the RoomConfigLookup function name
-  const configLookupMatch = source.match(/(\w+)\("noPlayer",/);
+  // Get the RoomConfigLookup function name - flexible with whitespace
+  const configLookupMatch = source.match(/(\w+)\s*\(\s*"noPlayer"\s*,/);
   if (!configLookupMatch) {
     throw new Error('Could not find RoomConfigLookup function');
   }
