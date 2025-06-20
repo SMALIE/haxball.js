@@ -34,7 +34,7 @@ function processSource(source) {
   source = applyRegexReplacements(source);
 
   // Add proxy support
-  source = addProxySupport(source);
+  // source = addProxySupport(source);
 
   // Wrap with module code
   return wrapWithModuleCode(source);
