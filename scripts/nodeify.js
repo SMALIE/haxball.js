@@ -146,11 +146,36 @@ var promiseResolve;
 var proxyAgent;
 var debug = false;
 
+// Global definitions to prevent ReferenceError
+global.window = global.window || {};
+global.document = global.document || {};
+global.parent = global.parent || {};
+
+// Define critical window properties that HaxBall expects
+global.window.performance = global.window.performance || performance;
+global.window.console = global.window.console || console;
+global.window.setTimeout = global.window.setTimeout || setTimeout;
+global.window.clearTimeout = global.window.clearTimeout || clearTimeout;
+global.window.setInterval = global.window.setInterval || setInterval;
+global.window.clearInterval = global.window.clearInterval || clearInterval;
+
+// Crypto API for the client
+global.window.crypto = global.window.crypto || crypto;
+
+// WebRTC polyfill globals
+global.RTCPeerConnection = RTCPeerConnection;
+global.RTCIceCandidate = RTCIceCandidate; 
+global.RTCSessionDescription = RTCSessionDescription;
+global.WebSocket = WebSocket;
+
 const HBLoaded = (config) => {
   if(config?.webrtc) {
     RTCPeerConnection = config.webrtc.RTCPeerConnection;
     RTCIceCandidate = config.webrtc.RTCIceCandidate;
     RTCSessionDescription = config.webrtc.RTCSessionDescription;
+    global.RTCPeerConnection = RTCPeerConnection;
+    global.RTCIceCandidate = RTCIceCandidate;
+    global.RTCSessionDescription = RTCSessionDescription;
   }
   return new Promise(function (resolve, reject) {
   promiseResolve = resolve;
