@@ -1,5 +1,5 @@
-{  "name": "@smalie/haxball-local",
-  "version": "1.0.0",
+{  "name": "@smalie/haxball.js",
+  "version": "1.0.2",
   "description": "A custom fork of haxball.js with local file reading support",
   "main": "src/index.js",
   "types": "types/index.d.ts",
